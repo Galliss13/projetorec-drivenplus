@@ -1,0 +1,6 @@
+export const black = '#0E0E13'
+export const purple = '#FF4791'
+export const red = '#FF4747'
+export const white = '#fff'
+export const gold = '#FFF16F'
+export const diamond = '#56D49F'
