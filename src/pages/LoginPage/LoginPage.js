@@ -1,34 +1,51 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { purple, white } from "../../constants/colors";
 import { url } from "../../constants/URLs";
+import AuthContext from "../../contexts/AuthContext";
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const {auth, setAuth} = useContext(AuthContext)
   const [loginform, setLoginForm] = useState({ email: "", password: "" });
+
+  useEffect(() => {
+    if (auth && auth.token) {
+      if (auth.membership === null) {
+        navigate('/subscriptions')
+      } else {
+        navigate('/home')
+      }
+    }
+  }, []);
 
   function handleLoginForm(e) {
     setLoginForm({ ...loginform, [e.target.name]: e.target.value });
   }
 
   function submitLoginForm(e) {
+
+    localStorage.clear()
     e.preventDefault();
+
     const promise = axios.post(`${url}/auth/login`, loginform);
     promise.then(login);
-    promise.catch((err) => alert(err.response.data));
+    promise.catch((err) => alert(err.response.data.message));
 
     function login(resp) {
-      localStorage.setItem(`${resp.name}`, JSON.stringify(resp));
-      if (resp.membership === null) {
+      setAuth(resp.data)
+      localStorage.setItem('usuario', JSON.stringify(resp.data));
+
+      if (resp.data.membership === null) {
         navigate("/subscriptions");
       } else {
         navigate("/home");
       }
     }
   }
-
   return (
     <LoginContainer>
       <LogoDriven>
@@ -54,7 +71,7 @@ export default function LoginPage() {
           onChange={handleLoginForm}
           required
         ></input>
-        <button type={"submit"}></button>
+        <button type={"submit"}>ENTRAR</button>
       </LoginForm>
       <LinkRegister onClick={() => navigate("/sign-up")}>
         Não possui um cadastro? Cadastre-se
