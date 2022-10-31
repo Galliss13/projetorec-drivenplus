@@ -11,7 +11,6 @@ import AuthContext from "./contexts/AuthContext";
 function App() {
   const persistedAuth = JSON.parse(localStorage.getItem("usuario"));
   const [auth, setAuth] = useState(persistedAuth);
-  console.log(auth, localStorage)
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
@@ -22,7 +21,7 @@ function App() {
           <Route path="/sign-up" element={<SignupPage />}></Route>
           <Route path="/subscriptions/:ID_DO_PLANO" element={<SubPage />}></Route>
           <Route path="/subscriptions" element={<SubscriptionsPage />}></Route>
-          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/home/:ID_DO_PLANO" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>

@@ -1,9 +1,15 @@
 import styled from "styled-components"
 import {black, white} from "../../constants/colors"
+import { useNavigate } from "react-router-dom"
 
 export default function Plan(props) {
+    const navigate = useNavigate()
     return (
-        <PlanContainer>
+        <PlanContainer onClick={() => {
+            navigate(`/subscriptions/${props.id}`)
+            console.log(props.id)
+     }
+     }>
             <PlanLogo src={props.image}/>
             <Price>R${props.price}</Price>
         </PlanContainer>

@@ -27,7 +27,7 @@ export default function SubscriptionsPage() {
         <SubsContainer>
             <Choose>Escolha seu Plano</Choose>
             {membership !== null ? membership.map((plan) => (
-                <Plan onClick={navigate(`/subscriptions/:${plan.id}`)} key={plan.id} image={plan.image} price={plan.price}/>
+                <Plan id={plan.id} key={plan.id} image={plan.image} price={plan.price}/>
             )) : ''}
         </SubsContainer>
     )

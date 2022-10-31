@@ -1,7 +1,20 @@
 import styled from "styled-components"
 import { purple, red, white } from "../../constants/colors"
+import AuthContext from "../../contexts/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+    const {auth} = useContext(AuthContext)
+    const navigate = useNavigate();
+
+    function cancelPlan() {
+        const promise = axios.delete(`${url}/subscriptions`,{
+            headers: { Authorization: `Bearer ${auth.token}` },
+          })
+        promise.then(() => navigate('/subscriptions'))
+        promise.catch((err) => alert(err.response.data.message))
+    }
     return (
         <HomeContainer>
             <LogoAvatar>
@@ -15,8 +28,8 @@ export default function HomePage() {
                 <Benefit>Aula bônus de tech</Benefit>
             </Buttons>
             <CancelorChange>
-                <ChangePlan>Mudar Plano</ChangePlan>
-                <CancelPlan>Cancelar Plano</CancelPlan>
+                <ChangePlan onClick={() => navigate('/subscriptions')}>Mudar Plano</ChangePlan>
+                <CancelPlan onClick={() => cancelPlan}>Cancelar Plano</CancelPlan>
             </CancelorChange>
         </HomeContainer>
     )
