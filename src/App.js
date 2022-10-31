@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />}></Route>
           <Route path="/sign-up" element={<SignupPage />}></Route>
-          <Route path="/yoursubscription" element={<SubPage />}></Route>
+          <Route path="/subscriptions/:ID_DO_PLANO" element={<SubPage />}></Route>
           <Route path="/subscriptions" element={<SubscriptionsPage />}></Route>
           <Route path="/home" element={<HomePage />}></Route>
         </Routes>

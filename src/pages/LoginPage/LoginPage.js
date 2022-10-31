@@ -12,15 +12,15 @@ export default function LoginPage() {
   const {auth, setAuth} = useContext(AuthContext)
   const [loginform, setLoginForm] = useState({ email: "", password: "" });
 
-  useEffect(() => {
-    if (auth && auth.token) {
-      if (auth.membership === null) {
-        navigate('/subscriptions')
-      } else {
-        navigate('/home')
-      }
-    }
-  }, []);
+  //useEffect(() => {
+  //  if (auth && auth.token) {
+  //    if (auth.membership === null) {
+  //      navigate('/subscriptions')
+  //    } else {
+  //      navigate('/home')
+  //    }
+  //  }
+  //}, []);
 
   function handleLoginForm(e) {
     setLoginForm({ ...loginform, [e.target.name]: e.target.value });

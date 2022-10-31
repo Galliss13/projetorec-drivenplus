@@ -1,25 +1,34 @@
+import axios from "axios"
+import { useEffect, useContext, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { black, gold, white, diamond, purple } from "../../constants/colors"
+import { url } from "../../constants/URLs"
+import AuthContext from "../../contexts/AuthContext"
+import Plan from "./Plan"
 
 export default function SubscriptionsPage() {
-    return (
+    const [membership, setMembership] = useState(null)
+    const {auth} = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const promise = axios.get(`${url}/subscriptions/memberships`, 
+        { headers: { Authorization: `Bearer ${auth.token}` } });
+        promise.then(resp => {
+            const apiPlan = resp.data
+            console.log(resp.data)
+            setMembership(apiPlan)
+        })
+        promise.catch(err => alert(err.response.data.message))
+    }, [])
+
+        return (
         <SubsContainer>
             <Choose>Escolha seu Plano</Choose>
-            <Plan>
-                <PlanLogo type={white}>D</PlanLogo>
-                <Plus>+</Plus>
-                <Price>R$ 39,99</Price>
-            </Plan>
-            <Plan>
-                <PlanLogo type={gold}>D</PlanLogo>
-                <Plus>+</Plus>
-                <Price>R$ 69,99</Price>
-            </Plan>
-            <Plan>
-                <PlanLogo type={diamond}>D</PlanLogo>
-                <Plus>+</Plus>
-                <Price>R$ 99,99</Price>
-            </Plan>
+            {membership !== null ? membership.map((plan) => (
+                <Plan onClick={navigate(`/subscriptions/:${plan.id}`)} key={plan.id} image={plan.image} price={plan.price}/>
+            )) : ''}
         </SubsContainer>
     )
 };
@@ -36,20 +45,7 @@ const Choose = styled.p`
     color: ${white};
 `
 
-const Plan = styled.div`
-    position: relative;
-    width: 290px;
-    height: 180px;
-    margin-bottom: 10px;
-    background-color: ${black};
-    border: 3px solid #7E7E7E;
-    border-radius: 12px;
-`
-
-const PlanLogo = styled.p`
-    font-size: xx-large;
-    font-weight: bold;
-    color: ${props => props.type};
+const PlanLogo = styled.img`
 `
 
 const Price = styled.p`
